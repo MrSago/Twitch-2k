@@ -12,6 +12,7 @@ jobs:
 
     env:
       RELEASE_NAME: Twitch-Quality-Unlocker-${{ github.ref_name }}
+      PACKAGE_NAME: Twitch-Quality-Unlocker
 
     steps:
       - name: Checkout code
@@ -19,7 +20,7 @@ jobs:
 
       - name: Create zip package
         run: |
-          zip -r ${{ env.RELEASE_NAME }}.zip . \
+          zip -r ${{ env.PACKAGE_NAME }}.zip . \
           -x "*.git*" "*.github*" "*.vscode*" "*.DS_Store" "*.gitignore"
 
       - name: Create Release
