@@ -1,0 +1,34 @@
+{
+  "appName": {
+    "message": "Twitch Quality Unlocker",
+    "description": "The title of the application"
+  },
+  "appDescription": {
+    "message": "Unlocks high quality streams on Twitch",
+    "description": "The description of the application"
+  },
+  "proxyEnabled": {
+    "message": "Proxy: Enabled",
+    "description": "Button text when proxy is enabled"
+  },
+  "proxyDisabled": {
+    "message": "Proxy: Disabled",
+    "description": "Button text when proxy is disabled"
+  },
+  "proxyAddress": {
+    "message": "Proxy Address",
+    "description": "Label for proxy address input"
+  },
+  "proxyPort": {
+    "message": "Proxy Port",
+    "description": "Label for proxy port input"
+  },
+  "reloadHint": {
+    "message": "Please reload Twitch tab",
+    "description": "Hint to reload Twitch after changing settings"
+  },
+  "useCustomProxy": {
+    "message": "Use custom proxy",
+    "description": "Checkbox label for using custom proxy"
+  }
+}

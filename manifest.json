@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Twitch Quality Unlocker",
+  "version": "1.0",
+  "description": "Proxy requests to usher.ttvnw.net to unlock all quality options on Twitch",
+  "default_locale": "en",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "permissions": ["proxy", "storage"],
+  "host_permissions": ["*://*.twitch.tv/*", "*://*.ttvnw.net/*"],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

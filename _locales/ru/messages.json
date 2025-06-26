@@ -1,0 +1,34 @@
+{
+  "appName": {
+    "message": "Twitch Quality Unlocker",
+    "description": "Название приложения"
+  },
+  "appDescription": {
+    "message": "Разблокировка высокого качества трансляций на Twitch",
+    "description": "Описание приложения"
+  },
+  "proxyEnabled": {
+    "message": "Прокси: Включен",
+    "description": "Текст кнопки, когда прокси включен"
+  },
+  "proxyDisabled": {
+    "message": "Прокси: Отключен",
+    "description": "Текст кнопки, когда прокси отключен"
+  },
+  "proxyAddress": {
+    "message": "Адрес прокси",
+    "description": "Метка для поля ввода адреса прокси"
+  },
+  "proxyPort": {
+    "message": "Порт прокси",
+    "description": "Метка для поля ввода порта прокси"
+  },
+  "reloadHint": {
+    "message": "Пожалуйста, перезагрузите вкладку Twitch",
+    "description": "Подсказка о перезагрузке Twitch после изменения настроек"
+  },
+  "useCustomProxy": {
+    "message": "Использовать свой прокси",
+    "description": "Метка для чекбокса использования своего прокси"
+  }
+}
