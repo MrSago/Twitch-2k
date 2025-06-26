@@ -41,5 +41,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./${{ env.PACKAGE_NAME }}.zip
-          asset_name: ${{ env.RELEASE_NAME }}.zip
+          asset_name: ${{ env.PACKAGE_NAME }}.zip
           asset_content_type: application/zip
