@@ -1,10 +1,10 @@
-# Twitch Quality Unlocker
+# Twitch 2k
 
 [Русская версия](README.md)
 
 ## About the Extension
 
-Twitch Quality Unlocker is an extension that unlocks all quality options on the Twitch platform. **The extension also unlocks 2K quality**, allowing you to enjoy broadcasts at the highest possible quality.
+Twitch 2k is an extension that unlocks all quality options on the Twitch platform. **The extension also unlocks 2K quality**, allowing you to enjoy broadcasts at the highest possible quality.
 
 The extension works by proxying two requests:
 
@@ -24,7 +24,7 @@ With the first one, we obtain the `streamPlaybackAccessToken`, which contains da
 
 To install the extension in developer mode in Chrome browser:
 
-1. Download and extract the [extension archive](https://github.com/MrSago/Twitch-Quality-Unlocker/releases/latest)
+1. Download and extract the [extension archive](https://github.com/MrSago/Twitch-2k/releases/latest)
 2. Go to page `chrome://extensions/`
 3. Enable "Developer mode" (toggle in the top right corner)
 4. Click the "Load unpacked extension" button

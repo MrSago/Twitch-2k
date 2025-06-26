@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      RELEASE_NAME: Twitch-Quality-Unlocker-${{ github.ref_name }}
-      PACKAGE_NAME: Twitch-Quality-Unlocker
+      RELEASE_NAME: Twitch-2k-${{ github.ref_name }}
+      PACKAGE_NAME: Twitch-2k
 
     steps:
       - name: Checkout code
