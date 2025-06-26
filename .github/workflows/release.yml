@@ -1,0 +1,44 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - "v*.*"
+
+jobs:
+  build:
+    permissions: write-all
+    runs-on: ubuntu-latest
+
+    env:
+      RELEASE_NAME: twitch-quality-unlocker-${{ github.ref_name }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create zip package
+        run: |
+          zip -r ${{ env.RELEASE_NAME }}.zip . \
+          -x "*.git*" "*.github*" "*.vscode*" "*.DS_Store" "*.gitignore"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ env.RELEASE_NAME }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ env.RELEASE_NAME }}.zip
+          asset_name: ${{ env.RELEASE_NAME }}.zip
+          asset_content_type: application/zip
