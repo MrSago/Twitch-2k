@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Twitch Quality Unlocker",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Proxy requests to unlock all quality options on Twitch",
   "default_locale": "en",
   "icons": {
