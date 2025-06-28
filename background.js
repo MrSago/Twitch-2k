@@ -1,20 +1,38 @@
-let proxyConfig = {
-  enabled: false,
-  address: "azaska.ru",
-  port: "1050",
+importScripts("config.js");
+
+let DEFAULT_PROXY_ADDRESS = "azaska.ru";
+let DEFAULT_PROXY_PORT = "1050";
+
+if (typeof self.CONFIG !== "undefined") {
+  DEFAULT_PROXY_ADDRESS = self.CONFIG.DEFAULT_PROXY_ADDRESS;
+  DEFAULT_PROXY_PORT = self.CONFIG.DEFAULT_PROXY_PORT;
+}
+
+const DEFAULT_PROXY = {
+  enabled: true,
+  address: DEFAULT_PROXY_ADDRESS,
+  port: DEFAULT_PROXY_PORT,
   useAuth: false,
+  useCustomProxy: false,
 };
 
-chrome.storage.sync.get(["proxyConfig"], function (result) {
-  if (result.proxyConfig) {
-    proxyConfig = result.proxyConfig;
-    if (proxyConfig.enabled) {
-      applyProxySettings();
-    }
-  }
-});
+let proxyConfig = { ...DEFAULT_PROXY };
 
-chrome.storage.onChanged.addListener(function (changes, namespace) {
+chrome.storage.sync
+  .get(["proxyConfig"])
+  .then((result) => {
+    if (result.proxyConfig) {
+      proxyConfig = result.proxyConfig;
+      if (proxyConfig.enabled) {
+        applyProxySettings();
+      }
+    }
+  })
+  .catch((error) => {
+    console.error(getMessage("errorLoadingSettings") + ":", error);
+  });
+
+chrome.storage.onChanged.addListener((changes, namespace) => {
   if (namespace === "sync" && changes.proxyConfig) {
     proxyConfig = changes.proxyConfig.newValue;
     if (proxyConfig.enabled) {
@@ -25,11 +43,23 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
   }
 });
 
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.sync.set({ proxyConfig: DEFAULT_PROXY }).catch((error) => {
+    console.error(getMessage("errorInitializingSettings") + ":", error);
+  });
+});
+
+function getMessage(key) {
+  return chrome.i18n.getMessage(key) || key;
+}
+
 function generatePacScript() {
   const proxyAddress = proxyConfig.useCustomProxy
     ? proxyConfig.address
-    : "azaska.ru";
-  const proxyPort = proxyConfig.useCustomProxy ? proxyConfig.port : "1050";
+    : DEFAULT_PROXY_ADDRESS;
+  const proxyPort = proxyConfig.useCustomProxy
+    ? proxyConfig.port
+    : DEFAULT_PROXY_PORT;
   const proxyString = `PROXY ${proxyAddress}:${proxyPort}`;
 
   return `function FindProxyForURL(url, host) {
@@ -56,18 +86,28 @@ function applyProxySettings() {
       value: proxySettings,
       scope: "regular",
     },
-    function () {
-      console.log("Proxy settings applied");
+    () => {
+      if (chrome.runtime.lastError) {
+        console.error(
+          getMessage("errorApplyingProxySettings") + ":",
+          chrome.runtime.lastError
+        );
+      } else {
+        console.log(getMessage("proxySettingsApplied"));
+      }
     }
   );
 }
 
 function disableProxy() {
-  chrome.proxy.settings.clear({ scope: "regular" }, function () {
-    console.log("Proxy settings cleared");
+  chrome.proxy.settings.clear({ scope: "regular" }, () => {
+    if (chrome.runtime.lastError) {
+      console.error(
+        getMessage("errorClearingProxySettings") + ":",
+        chrome.runtime.lastError
+      );
+    } else {
+      console.log(getMessage("proxySettingsCleared"));
+    }
   });
 }
-
-chrome.runtime.onInstalled.addListener(function () {
-  chrome.storage.sync.set({ proxyConfig: proxyConfig });
-});

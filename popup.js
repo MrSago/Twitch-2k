@@ -12,11 +12,87 @@ document.addEventListener("DOMContentLoaded", function () {
   let isProxyEnabled = false;
   let useCustomProxy = false;
 
+  const DEFAULT_PROXY_ADDRESS = window.CONFIG.DEFAULT_PROXY_ADDRESS;
+  const DEFAULT_PROXY_PORT = window.CONFIG.DEFAULT_PROXY_PORT;
+
   function getMessage(key) {
     return chrome.i18n.getMessage(key) || key;
   }
 
-  updateUILanguage();
+  function updateToggleButton(enabled) {
+    if (enabled) {
+      toggleProxyButton.textContent = getMessage("proxyEnabled");
+      toggleProxyButton.classList.add("toggle-enabled");
+      toggleProxyButton.classList.remove("toggle-disabled");
+    } else {
+      toggleProxyButton.textContent = getMessage("proxyDisabled");
+      toggleProxyButton.classList.add("toggle-disabled");
+      toggleProxyButton.classList.remove("toggle-enabled");
+    }
+  }
+
+  function updateCustomProxyFields() {
+    customProxyFields.classList.toggle("hidden", !useCustomProxy);
+  }
+
+  function saveSettings() {
+    const proxyConfig = {
+      enabled: isProxyEnabled,
+      address: useCustomProxy
+        ? proxyAddressInput.value.trim()
+        : DEFAULT_PROXY_ADDRESS,
+      port: useCustomProxy ? proxyPortInput.value.trim() : DEFAULT_PROXY_PORT,
+      useAuth: false,
+      useCustomProxy: useCustomProxy,
+    };
+
+    chrome.storage.sync
+      .set({ proxyConfig: proxyConfig })
+      .then(() => {
+        updateToggleButton(proxyConfig.enabled);
+        notificationHint.textContent =
+          window.reloadProxySettingsMessage || getMessage("reloadHint");
+        notificationHint.classList.remove("hidden");
+      })
+      .catch((error) => {
+        console.error("Error saving proxy settings:", error);
+        notificationHint.textContent = getMessage("errorSavingSettings");
+        notificationHint.classList.remove("hidden");
+      });
+  }
+
+  function loadSettings() {
+    chrome.storage.sync
+      .get(["proxyConfig"])
+      .then((result) => {
+        if (result.proxyConfig) {
+          isProxyEnabled = result.proxyConfig.enabled;
+          useCustomProxy = result.proxyConfig.useCustomProxy || false;
+          proxyAddressInput.value =
+            result.proxyConfig.address || DEFAULT_PROXY_ADDRESS;
+          proxyPortInput.value = result.proxyConfig.port || DEFAULT_PROXY_PORT;
+
+          updateToggleButton(isProxyEnabled);
+          useCustomProxyCheckbox.checked = useCustomProxy;
+          updateCustomProxyFields();
+        } else {
+          isProxyEnabled = false;
+          useCustomProxy = false;
+          proxyAddressInput.value = DEFAULT_PROXY_ADDRESS;
+          proxyPortInput.value = DEFAULT_PROXY_PORT;
+          useCustomProxyCheckbox.checked = false;
+          updateToggleButton(false);
+          updateCustomProxyFields();
+        }
+
+        notificationHint.classList.add("hidden");
+      })
+      .catch((error) => {
+        console.error("Error loading proxy settings:", error);
+        notificationHint.textContent = getMessage("errorLoadingSettings");
+        notificationHint.classList.remove("hidden");
+      });
+  }
 
   function updateUILanguage() {
     const extensionTitle = document.querySelector("h2");
@@ -50,85 +126,30 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  setThemeBasedOnBrowserPreference();
-
-  if (window.matchMedia) {
-    window
-      .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", setThemeBasedOnBrowserPreference);
-  }
-
-  function updateToggleButton(enabled) {
-    if (enabled) {
-      toggleProxyButton.textContent = getMessage("proxyEnabled");
-      toggleProxyButton.classList.add("toggle-enabled");
-      toggleProxyButton.classList.remove("toggle-disabled");
-    } else {
-      toggleProxyButton.textContent = getMessage("proxyDisabled");
-      toggleProxyButton.classList.add("toggle-disabled");
-      toggleProxyButton.classList.remove("toggle-enabled");
-    }
-  }
-
-  function updateCustomProxyFields() {
-    if (useCustomProxy) {
-      customProxyFields.classList.remove("hidden");
-    } else {
-      customProxyFields.classList.add("hidden");
-    }
-  }
-
-  function saveSettings() {
-    const proxyConfig = {
-      enabled: isProxyEnabled,
-      address: useCustomProxy ? proxyAddressInput.value : "azaska.ru",
-      port: useCustomProxy ? proxyPortInput.value : "1050",
-      useAuth: false,
-      useCustomProxy: useCustomProxy,
-    };
-
-    chrome.storage.sync.set({ proxyConfig: proxyConfig }, function () {
-      updateToggleButton(proxyConfig.enabled);
-      notificationHint.textContent =
-        window.reloadProxySettingsMessage || getMessage("reloadHint");
-      notificationHint.classList.remove("hidden");
+  function setupEventListeners() {
+    toggleProxyButton.addEventListener("click", function () {
+      isProxyEnabled = !isProxyEnabled;
+      saveSettings();
     });
+
+    useCustomProxyCheckbox.addEventListener("change", function () {
+      useCustomProxy = useCustomProxyCheckbox.checked;
+      updateCustomProxyFields();
+      saveSettings();
+    });
+
+    proxyAddressInput.addEventListener("input", saveSettings);
+    proxyPortInput.addEventListener("input", saveSettings);
+
+    if (window.matchMedia) {
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", setThemeBasedOnBrowserPreference);
+    }
   }
 
-  chrome.storage.sync.get(["proxyConfig"], function (result) {
-    if (result.proxyConfig) {
-      isProxyEnabled = result.proxyConfig.enabled;
-      useCustomProxy = result.proxyConfig.useCustomProxy || false;
-      proxyAddressInput.value = result.proxyConfig.address;
-      proxyPortInput.value = result.proxyConfig.port;
-
-      updateToggleButton(isProxyEnabled);
-      useCustomProxyCheckbox.checked = useCustomProxy;
-      updateCustomProxyFields();
-    } else {
-      isProxyEnabled = false;
-      useCustomProxy = false;
-      proxyAddressInput.value = "azaska.ru";
-      proxyPortInput.value = "1050";
-      useCustomProxyCheckbox.checked = false;
-      updateToggleButton(false);
-      updateCustomProxyFields();
-    }
-
-    notificationHint.classList.add("hidden");
-  });
-
-  toggleProxyButton.addEventListener("click", function () {
-    isProxyEnabled = !isProxyEnabled;
-    saveSettings();
-  });
-
-  useCustomProxyCheckbox.addEventListener("change", function () {
-    useCustomProxy = useCustomProxyCheckbox.checked;
-    updateCustomProxyFields();
-    saveSettings();
-  });
-
-  proxyAddressInput.addEventListener("input", saveSettings);
-  proxyPortInput.addEventListener("input", saveSettings);
+  loadSettings();
+  updateUILanguage();
+  setThemeBasedOnBrowserPreference();
+  setupEventListeners();
 });

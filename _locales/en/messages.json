@@ -30,5 +30,33 @@
   "useCustomProxy": {
     "message": "Use custom proxy",
     "description": "Checkbox label for using custom proxy"
+  },
+  "errorSavingSettings": {
+    "message": "Error saving settings",
+    "description": "Error message when settings cannot be saved"
+  },
+  "errorLoadingSettings": {
+    "message": "Error loading settings",
+    "description": "Error message when settings cannot be loaded"
+  },
+  "errorInitializingSettings": {
+    "message": "Error initializing settings",
+    "description": "Error message when settings cannot be initialized"
+  },
+  "errorApplyingProxySettings": {
+    "message": "Error applying proxy settings",
+    "description": "Error message when proxy settings cannot be applied"
+  },
+  "errorClearingProxySettings": {
+    "message": "Error clearing proxy settings",
+    "description": "Error message when proxy settings cannot be cleared"
+  },
+  "proxySettingsApplied": {
+    "message": "Proxy settings applied",
+    "description": "Success message when proxy settings are applied"
+  },
+  "proxySettingsCleared": {
+    "message": "Proxy settings cleared",
+    "description": "Success message when proxy settings are cleared"
   }
 }
