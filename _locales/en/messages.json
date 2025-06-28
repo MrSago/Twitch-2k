@@ -4,7 +4,7 @@
     "description": "The title of the application"
   },
   "appDescription": {
-    "message": "Unlocks high quality streams on Twitch",
+    "message": "Proxy requests to unlock all quality options on Twitch",
     "description": "The description of the application"
   },
   "proxyEnabled": {

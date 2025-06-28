@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Twitch 2k",
+  "name": "__MSG_appName__",
   "version": "1.2",
-  "description": "Proxy requests to unlock all quality options on Twitch",
+  "description": "__MSG_appDescription__",
   "default_locale": "en",
   "icons": {
     "16": "icons/icon16.png",
