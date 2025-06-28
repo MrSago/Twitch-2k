@@ -20,12 +20,15 @@ With the first one, we obtain the `streamPlaybackAccessToken`, which contains da
 - 📺 Access to 2K quality for broadcasts that support it
 - 🔧 Option to use both built-in and custom proxy servers
 
-## Developer Mode Installation (Chrome)
+## Developer Mode Installation
 
-To install the extension in developer mode in Chrome browser:
+To install the extension in developer mode:
 
 1. Download and extract the [extension archive](https://github.com/MrSago/Twitch-2k/releases/latest)
-2. Go to page `chrome://extensions/`
+2. Go to the extensions page:
+   - Chrome: `chrome://extensions/`
+   - Yandex Browser: `browser://extensions/`
+   - Opera: `opera://extensions`
 3. Enable "Developer mode" (toggle in the top right corner)
 4. Click the "Load unpacked extension" button
 5. Select the folder with the unpacked extension
@@ -34,7 +37,7 @@ To install the extension in developer mode in Chrome browser:
 ## Usage
 
 1. After installation, click on the extension icon in the toolbar
-2. Enable the proxy using the corresponding button
+2. Enable the proxy using the corresponding extension button
 3. Open Twitch and enjoy all available quality options
 4. If necessary, reload the Twitch tab to apply changes
 
