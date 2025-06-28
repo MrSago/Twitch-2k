@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const toggleProxyButton = document.getElementById("toggleProxy");
   const proxyAddressInput = document.getElementById("proxyAddress");
   const proxyPortInput = document.getElementById("proxyPort");
-  const reloadHint = document.getElementById("reloadHint");
+  const notificationHint = document.getElementById("notificationHint");
   const proxyAddressLabel = document.getElementById("proxyAddressLabel");
   const proxyPortLabel = document.getElementById("proxyPortLabel");
   const useCustomProxyCheckbox = document.getElementById("useCustomProxy");
@@ -28,10 +28,10 @@ document.addEventListener("DOMContentLoaded", function () {
     window.reloadProxySettingsMessage = getMessage("reloadHint");
 
     if (
-      !reloadHint.classList.contains("hidden") &&
-      !reloadHint.textContent.includes("anguage")
+      !notificationHint.classList.contains("hidden") &&
+      !notificationHint.textContent.includes("anguage")
     ) {
-      reloadHint.textContent = window.reloadProxySettingsMessage;
+      notificationHint.textContent = window.reloadProxySettingsMessage;
     }
 
     toggleProxyButton.textContent = isProxyEnabled
@@ -89,9 +89,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     chrome.storage.sync.set({ proxyConfig: proxyConfig }, function () {
       updateToggleButton(proxyConfig.enabled);
-      reloadHint.textContent =
+      notificationHint.textContent =
         window.reloadProxySettingsMessage || getMessage("reloadHint");
-      reloadHint.classList.remove("hidden");
+      notificationHint.classList.remove("hidden");
     });
   }
 
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
       updateCustomProxyFields();
     }
 
-    reloadHint.classList.add("hidden");
+    notificationHint.classList.add("hidden");
   });
 
   toggleProxyButton.addEventListener("click", function () {
