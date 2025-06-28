@@ -58,5 +58,21 @@
   "proxySettingsCleared": {
     "message": "Proxy settings cleared",
     "description": "Success message when proxy settings are cleared"
+  },
+  "errorEmptyAddress": {
+    "message": "Proxy address cannot be empty",
+    "description": "Error message when proxy address is empty"
+  },
+  "errorInvalidAddress": {
+    "message": "Invalid proxy address format",
+    "description": "Error message when proxy address format is invalid"
+  },
+  "errorEmptyPort": {
+    "message": "Proxy port cannot be empty",
+    "description": "Error message when proxy port is empty"
+  },
+  "errorInvalidPort": {
+    "message": "Invalid proxy port (must be between 1-65535)",
+    "description": "Error message when proxy port is invalid"
   }
 }

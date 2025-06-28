@@ -19,6 +19,42 @@ document.addEventListener("DOMContentLoaded", function () {
     return chrome.i18n.getMessage(key) || key;
   }
 
+  function validateProxy(address, port) {
+    const validationResult = { isValid: true, message: "" };
+
+    if (!address || address.trim() === "") {
+      validationResult.isValid = false;
+      validationResult.message = getMessage("errorEmptyAddress");
+      return validationResult;
+    }
+
+    const hostnameRegex =
+      /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+    const ipRegex =
+      /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/;
+
+    if (!hostnameRegex.test(address) && !ipRegex.test(address)) {
+      validationResult.isValid = false;
+      validationResult.message = getMessage("errorInvalidAddress");
+      return validationResult;
+    }
+
+    if (!port || port.trim() === "") {
+      validationResult.isValid = false;
+      validationResult.message = getMessage("errorEmptyPort");
+      return validationResult;
+    }
+
+    const portNumber = parseInt(port, 10);
+    if (isNaN(portNumber) || portNumber < 1 || portNumber > 65535) {
+      validationResult.isValid = false;
+      validationResult.message = getMessage("errorInvalidPort");
+      return validationResult;
+    }
+
+    return validationResult;
+  }
+
   function updateToggleButton(enabled) {
     if (enabled) {
       toggleProxyButton.textContent = getMessage("proxyEnabled");
@@ -36,6 +72,19 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function saveSettings() {
+    if (useCustomProxy) {
+      const proxyValidation = validateProxy(
+        proxyAddressInput.value.trim(),
+        proxyPortInput.value.trim()
+      );
+
+      if (!proxyValidation.isValid) {
+        notificationHint.textContent = proxyValidation.message;
+        notificationHint.classList.remove("hidden");
+        return;
+      }
+    }
+
     const proxyConfig = {
       enabled: isProxyEnabled,
       address: useCustomProxy
@@ -128,6 +177,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function setupEventListeners() {
     toggleProxyButton.addEventListener("click", function () {
+      if (useCustomProxy) {
+        const proxyValidation = validateProxy(
+          proxyAddressInput.value.trim(),
+          proxyPortInput.value.trim()
+        );
+
+        if (!proxyValidation.isValid) {
+          notificationHint.textContent = proxyValidation.message;
+          notificationHint.classList.remove("hidden");
+          return;
+        }
+      }
+
       isProxyEnabled = !isProxyEnabled;
       saveSettings();
     });
@@ -138,8 +200,51 @@ document.addEventListener("DOMContentLoaded", function () {
       saveSettings();
     });
 
-    proxyAddressInput.addEventListener("input", saveSettings);
-    proxyPortInput.addEventListener("input", saveSettings);
+    proxyAddressInput.addEventListener("input", function () {
+      if (
+        !notificationHint.classList.contains("hidden") &&
+        (notificationHint.textContent === getMessage("errorEmptyAddress") ||
+          notificationHint.textContent === getMessage("errorInvalidAddress"))
+      ) {
+        notificationHint.classList.add("hidden");
+      }
+    });
+
+    proxyPortInput.addEventListener("input", function () {
+      if (
+        !notificationHint.classList.contains("hidden") &&
+        (notificationHint.textContent === getMessage("errorEmptyPort") ||
+          notificationHint.textContent === getMessage("errorInvalidPort"))
+      ) {
+        notificationHint.classList.add("hidden");
+      }
+    });
+
+    proxyAddressInput.addEventListener("blur", function () {
+      if (useCustomProxy) {
+        const validation = validateProxy(
+          proxyAddressInput.value.trim(),
+          proxyPortInput.value.trim()
+        );
+        if (!validation.isValid) {
+          notificationHint.textContent = validation.message;
+          notificationHint.classList.remove("hidden");
+        }
+      }
+    });
+
+    proxyPortInput.addEventListener("blur", function () {
+      if (useCustomProxy) {
+        const validation = validateProxy(
+          proxyAddressInput.value.trim(),
+          proxyPortInput.value.trim()
+        );
+        if (!validation.isValid) {
+          notificationHint.textContent = validation.message;
+          notificationHint.classList.remove("hidden");
+        }
+      }
+    });
 
     if (window.matchMedia) {
       window
