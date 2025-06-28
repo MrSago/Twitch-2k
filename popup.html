@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Twitch 2k</title>
+    <title>__MSG_appName__</title>
     <meta charset="utf-8" />
     <style>
       body {
@@ -206,36 +206,36 @@
   </head>
   <body>
     <div class="container">
-      <h2 id="extensionTitle">Twitch 2k</h2>
+      <h2 id="extensionTitle">__MSG_appName__</h2>
       <div class="form-group">
         <button id="toggleProxy" class="toggle-button toggle-disabled">
-          Proxy: Disabled
+          __MSG_proxyDisabled__
         </button>
       </div>
 
       <div class="form-group checkbox-container">
         <label class="checkbox-label">
           <input type="checkbox" id="useCustomProxy" />
-          <span id="useCustomProxyLabel">Use custom proxy</span>
+          <span id="useCustomProxyLabel">__MSG_useCustomProxy__</span>
         </label>
       </div>
 
       <div id="customProxyFields" class="custom-proxy-fields hidden">
         <div class="form-group">
           <label for="proxyAddress" id="proxyAddressLabel"
-            >Proxy Address:</label
+            >__MSG_proxyAddress__:</label
           >
           <input type="text" id="proxyAddress" />
         </div>
 
         <div class="form-group">
-          <label for="proxyPort" id="proxyPortLabel">Proxy Port:</label>
+          <label for="proxyPort" id="proxyPortLabel">__MSG_proxyPort__:</label>
           <input type="number" id="proxyPort" />
         </div>
       </div>
 
       <div id="notificationHint" class="notification-hint">
-        Reload the page to apply changes
+        __MSG_reloadHint__
       </div>
 
       <div class="social-links">
