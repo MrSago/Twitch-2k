@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const DEFAULT_PROXY_ADDRESS = window.CONFIG.DEFAULT_PROXY_ADDRESS;
   const DEFAULT_PROXY_PORT = window.CONFIG.DEFAULT_PROXY_PORT;
 
+  window.reloadProxySettingsMessage = getMessage("reloadHint");
+
   function getMessage(key, substitutions) {
     return chrome.i18n.getMessage(key, substitutions) || key;
   }
@@ -170,26 +172,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function updateUILanguage() {
+  function initializeStaticLocalization() {
     const extensionTitle = document.querySelector("h2");
-
     extensionTitle.textContent = getMessage("appName");
+
     useCustomProxyLabel.textContent = getMessage("useCustomProxy");
     proxyAddressLabel.textContent = getMessage("proxyAddress") + ":";
     proxyPortLabel.textContent = getMessage("proxyPort") + ":";
-    window.reloadProxySettingsMessage = getMessage("reloadHint");
 
-    if (
-      !notificationHint.classList.contains("hidden") &&
-      !notificationHint.textContent.includes("anguage")
-    ) {
-      notificationHint.textContent = window.reloadProxySettingsMessage;
+    if (notificationHint.textContent.startsWith("__MSG_")) {
+      notificationHint.textContent = getMessage("reloadHint");
     }
-
-    toggleProxyButton.textContent = isProxyEnabled
-      ? getMessage("proxyEnabled")
-      : getMessage("proxyDisabled");
   }
+
+  window.reloadProxySettingsMessage = getMessage("reloadHint");
 
   function setThemeBasedOnBrowserPreference() {
     if (
@@ -288,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   loadSettings();
   loadUpdateInfo();
-  updateUILanguage();
+  initializeStaticLocalization();
   setThemeBasedOnBrowserPreference();
   setupEventListeners();
 });
