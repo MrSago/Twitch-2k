@@ -14,12 +14,6 @@ The extension works by proxying two requests:
 
 With the first one, we obtain the `streamPlaybackAccessToken`, which contains data about the maximum available quality. The second request sends some token data and, as a response, receives unique links for broadcasting each quality option.
 
-## Main Features
-
-- 🔓 Unlock all available quality options on Twitch
-- 📺 Access to 2K quality for broadcasts that support it
-- 🔧 Option to use both built-in and custom proxy servers
-
 ## Developer Mode Installation
 
 To install the extension in developer mode:
