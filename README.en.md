@@ -19,6 +19,7 @@ With the first one, we obtain the `streamPlaybackAccessToken`, which contains da
 To install the extension in developer mode:
 
 1. Download and extract the [extension archive](https://github.com/MrSago/Twitch-2k/releases/latest)
+   - [**ABOUT TROJAN IN ARCHIVE**](./VIRUS.md)
 2. Go to the extensions page:
    - Chrome: `chrome://extensions/`
    - Yandex Browser: `browser://extensions/`
