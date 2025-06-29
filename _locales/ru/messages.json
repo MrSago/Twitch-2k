@@ -74,5 +74,19 @@
   "errorInvalidPort": {
     "message": "Неверный порт прокси (должен быть между 1-65535)",
     "description": "Сообщение об ошибке, когда порт прокси неверен"
+  },
+  "updateAvailable": {
+    "message": "Доступна новая версия: $version$",
+    "description": "Сообщение, показываемое когда доступно обновление",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "1.3"
+      }
+    }
+  },
+  "errorCheckingUpdates": {
+    "message": "Ошибка проверки обновлений",
+    "description": "Сообщение об ошибке при проверке обновлений"
   }
 }

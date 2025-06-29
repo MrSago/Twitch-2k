@@ -17,8 +17,12 @@
       "128": "icons/icon128.png"
     }
   },
-  "permissions": ["proxy", "storage"],
-  "host_permissions": ["*://*.twitch.tv/*", "*://*.ttvnw.net/*"],
+  "permissions": ["proxy", "storage", "alarms"],
+  "host_permissions": [
+    "*://*.twitch.tv/*",
+    "*://*.ttvnw.net/*",
+    "*://api.github.com/*"
+  ],
   "background": {
     "service_worker": "background.js"
   }

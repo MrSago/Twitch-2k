@@ -74,5 +74,19 @@
   "errorInvalidPort": {
     "message": "Invalid proxy port (must be between 1-65535)",
     "description": "Error message when proxy port is invalid"
+  },
+  "updateAvailable": {
+    "message": "New version available: $version$",
+    "description": "Message shown when update is available",
+    "placeholders": {
+      "version": {
+        "content": "$1",
+        "example": "1.3"
+      }
+    }
+  },
+  "errorCheckingUpdates": {
+    "message": "Error checking for updates",
+    "description": "Error message when update check fails"
   }
 }

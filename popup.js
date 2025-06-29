@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const useCustomProxyCheckbox = document.getElementById("useCustomProxy");
   const useCustomProxyLabel = document.getElementById("useCustomProxyLabel");
   const customProxyFields = document.getElementById("customProxyFields");
+  const updateInfo = document.getElementById("updateInfo");
+  const updateStatus = document.getElementById("updateStatus");
 
   let isProxyEnabled = false;
   let useCustomProxy = false;
@@ -15,8 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const DEFAULT_PROXY_ADDRESS = window.CONFIG.DEFAULT_PROXY_ADDRESS;
   const DEFAULT_PROXY_PORT = window.CONFIG.DEFAULT_PROXY_PORT;
 
-  function getMessage(key) {
-    return chrome.i18n.getMessage(key) || key;
+  function getMessage(key, substitutions) {
+    return chrome.i18n.getMessage(key, substitutions) || key;
   }
 
   function validateProxy(address, port) {
@@ -143,6 +145,31 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
+  function loadUpdateInfo() {
+    chrome.storage.local.get(["updateInfo"], (result) => {
+      if (result.updateInfo) {
+        const info = result.updateInfo;
+
+        if (info.hasUpdate) {
+          updateStatus.textContent = getMessage("updateAvailable", [
+            info.latestVersion,
+          ]);
+          updateStatus.className = "update-status available";
+          updateStatus.onclick = () => {
+            if (info.releaseUrl) {
+              chrome.tabs.create({ url: info.releaseUrl });
+            }
+          };
+          updateInfo.classList.remove("hidden");
+        } else if (info.error) {
+          console.log("Update check error:", info.error);
+        } else {
+          updateInfo.classList.add("hidden");
+        }
+      }
+    });
+  }
+
   function updateUILanguage() {
     const extensionTitle = document.querySelector("h2");
 
@@ -253,7 +280,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace === "local" && changes.updateInfo) {
+      loadUpdateInfo();
+    }
+  });
+
   loadSettings();
+  loadUpdateInfo();
   updateUILanguage();
   setThemeBasedOnBrowserPreference();
   setupEventListeners();
