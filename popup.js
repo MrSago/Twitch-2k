@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
       toggleProxyButton.classList.add("toggle-disabled");
       toggleProxyButton.classList.remove("toggle-enabled");
     }
+    toggleProxyButton.classList.remove("hidden");
   }
 
   function updateCustomProxyFields() {
